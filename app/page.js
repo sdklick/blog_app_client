@@ -1,103 +1,277 @@
+"use client";
+
+import Link from "next/link";
+import { FcComboChart } from "react-icons/fc";
+import { FcAdvance } from "react-icons/fc";
 import Image from "next/image";
+import { useGetArticlesQuery } from "@/redux/services/articlesApi";
+import { useGetCategoryQuery } from "@/redux/services/categoryApi";
 
-export default function Home() {
+const HomePage = () => {
+  const {
+    data: article,
+    isLoading: isArticlesLoading,
+    isError: isArticlesError,
+  } = useGetArticlesQuery();
+  const {
+    data: categories,
+    isLoading: isCategoriesLoading,
+    isError: isCategoriesError,
+  } = useGetCategoryQuery();
+
+  const firstThreeArticles = article?.articles?.slice(0, 3);
+  const firstThreecategories = categories?.category?.slice(0, 3);
+
+  if (isArticlesLoading || isCategoriesLoading)
+    return (
+      <div className="flex bg-gray-900 justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
+      </div>
+    );
+
+  if (isArticlesError || isCategoriesError)
+    return <p className="text-red-500">Failed to load articles.</p>;
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="font-inter bg-gray-50">
+      {/* Hero Section */}
+      <section className="relative bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-24 sm:py-32 overflow-hidden shadow-inner">
+        <div
+          className="absolute inset-0 bg-pattern opacity-10"
+          style={{
+            backgroundImage: "radial-gradient(#ffffff20 1px, transparent 1px)",
+            backgroundSize: "20px 20px",
+          }}
+        ></div>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold leading-tight mb-6 animate-fade-in-up">
+            Welcome to <span className="text-yellow-300">WordNext</span> Blog
+          </h1>
+          <p className="text-xl sm:text-2xl mb-10 max-w-3xl mx-auto animate-fade-in-up delay-200">
+            Your daily dose of insights on technology, lifestyle, food, travel,
+            and more. Discover, learn, and grow with our expert articles.
+          </p>
+          <div className="flex justify-center space-x-4 animate-fade-in-up delay-400">
+            <Link
+              href="/articles"
+              className="inline-flex items-center px-8 py-4 border border-transparent text-lg font-semibold rounded-full shadow-lg text-blue-700 bg-white hover:bg-gray-100 transform hover:scale-105 transition-all duration-300"
+            >
+              Read Articles
+              <svg
+                className="ml-2 w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
+                ></path>
+              </svg>
+            </Link>
+            <Link
+              href="/categories"
+              className="inline-flex items-center px-8 py-4 border-2 border-white text-lg font-semibold rounded-full text-white hover:bg-white hover:text-blue-700 transform hover:scale-105 transition-all duration-300"
+            >
+              Explore Categories
+              <svg
+                className="ml-2 w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                ></path>
+              </svg>
+            </Link>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </section>
+
+      {/* Recent Articles Section */}
+      <section className="bg-gray-900 py-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-4xl font-extrabold text-white text-center mb-12">
+            Latest from the Blog
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {firstThreeArticles.map((article) => (
+              <Link
+                key={article.id}
+                href={`/articles/${article.id}`}
+                className="block"
+              >
+                <div className="bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out transform hover:-translate-y-1 overflow-hidden group">
+                  <div className="w-full h-48 overflow-hidden">
+                    <img
+                      src={article.image}
+                      alt={article.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src =
+                          "https://placehold.co/400x250/333333/AAAAAA?text=Image+Error";
+                      }}
+                    />
+                  </div>
+                  <div className="p-6">
+                    <span className="text-sm font-semibold text-blue-400 mb-2 block">
+                      {article.category}
+                    </span>
+                    <h3 className="text-xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors duration-200 line-clamp-2">
+                      {article.title}
+                    </h3>
+                    <p className="text-gray-300 text-base mb-4 line-clamp-3">
+                      {article.excerpt}
+                    </p>
+                    <div className="flex items-center justify-between text-sm text-gray-400">
+                      <span className="flex items-center">
+                        <svg
+                          className="w-4 h-4 mr-1 text-gray-400"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                            clipRule="evenodd"
+                          ></path>
+                        </svg>
+                        {article.date}
+                      </span>
+                      <span className="text-blue-400 font-semibold group-hover:underline">
+                        Read More &rarr;
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          <div className="text-center mt-12">
+            <Link
+              href="/articles"
+              className="inline-flex items-center px-6 py-3 border-2 border-blue-500 text-base font-semibold rounded-full text-blue-400 hover:bg-blue-500 hover:text-white transition-all duration-300 transform hover:scale-105"
+            >
+              View All Articles
+              <svg
+                className="ml-2 w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
+                ></path>
+              </svg>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Categories Section */}
+      <section className="bg-gray-900 py-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-4xl font-extrabold text-white text-center mb-12">
+            Browse By Category
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {firstThreecategories.map((c) => (
+              <div
+                key={c.category}
+                className="bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out transform hover:-translate-y-1 p-6 group"
+              >
+                {/* Centered Logo */}
+                <div className="flex justify-center mb-4">
+                  <Image src={`https://placehold.co/400x200/111827/F3F4F6?text=${c.category}`} alt="Logo" width={400} height={200} />
+                </div>
+
+                {/* Title */}
+                <h3 className="text-2xl font-bold text-[#D4AF37] text-center mb-2 group-hover:text-blue-400 transition-colors duration-200">
+                  {c.category}
+                </h3>
+
+                {/* Bottom Row */}
+                <div className="mt-6 flex items-center justify-between text-sm">
+                  <div className="flex items-center text-gray-300">
+                    <FcComboChart size={18} className="mr-1 text-blue-400" />
+                    {c.totalPosts} Posts
+                  </div>
+                  <Link
+                    href={`/categories/${c.category}`}
+                    className=" hover:underline transition duration-200"
+                  >
+                    <FcAdvance size={30} />
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Explore All Categories Button */}
+          <div className="text-center mt-12">
+            <Link
+              href="/categories"
+              className="inline-flex items-center px-6 py-3 border-2 border-blue-500 text-base font-semibold rounded-full text-blue-400 hover:bg-blue-500 hover:text-white transition-all duration-300 transform hover:scale-105"
+            >
+              Explore All Categories
+              <svg
+                className="ml-2 w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                ></path>
+              </svg>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Basic Tailwind CSS animations for hero section */}
+      <style jsx>{`
+        @keyframes fadeInScale {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .animate-fade-in-up {
+          animation: fadeInScale 0.6s ease-out forwards;
+        }
+        .delay-200 {
+          animation-delay: 0.2s;
+        }
+        .delay-400 {
+          animation-delay: 0.4s;
+        }
+      `}</style>
     </div>
   );
-}
+};
+
+export default HomePage;
