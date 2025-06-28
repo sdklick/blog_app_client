@@ -1,25 +1,45 @@
+"use client";
+
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { FcApproval, FcPrevious } from "react-icons/fc";
-async function getArticle(id) {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles/${id}`,
-    {
-      cache: "no-store", // ensures fresh data every time (like getServerSideProps)
-    }
-  );
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch article");
-  }
+export default function Singlepage(props) {
+  const params = React.use(props.params); // ✅ unwrap Promise
+  const id = params.singlepage;
 
-  return res.json();
-}
+  const [postData, setPostData] = useState(null);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
 
-const Singlepage = async (props) => {
-  const id = await props.params;
-  const postData = await getArticle(id.singlepage);
-  console.log(postData.image);
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles/${id}`,
+          {
+            cache: "no-store",
+          }
+        );
+
+        if (!res.ok) throw new Error("Failed to fetch article");
+
+        const data = await res.json();
+        setPostData(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (id) fetchPost();
+  }, [id]);
+
+  if (loading) return <p className="text-white p-8">Loading...</p>;
+  if (error) return <p className="text-red-400 p-8">Error: {error}</p>;
+  if (!postData) return null;
 
   return (
     <div className="container-fluid font-sans text-white bg-gray-950">
@@ -49,7 +69,7 @@ const Singlepage = async (props) => {
             <span>
               <FcApproval />
             </span>
-            {postData.tags && postData.tags.length > 0 && (
+            {postData.tags?.length > 0 && (
               <>
                 <span>&bull;</span>
                 <div className="flex flex-wrap gap-2 mt-2 md:mt-0">
@@ -79,6 +99,4 @@ const Singlepage = async (props) => {
       </article>
     </div>
   );
-};
-
-export default Singlepage;
+}
