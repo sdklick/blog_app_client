@@ -1,44 +1,31 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useGetArticleByIdQuery } from "@/redux/services/singleArticleApi";
 import { FcApproval, FcPrevious } from "react-icons/fc";
 
 export default function Singlepage(props) {
-  const params = React.use(props.params); // ✅ unwrap Promise
+  const params = React.use(props.params);
   const id = params.singlepage;
 
-  const [postData, setPostData] = useState(null);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(true);
+  const {
+    data: postData,
+    error,
+    isLoading,
+  } = useGetArticleByIdQuery(id, {
+    skip: !id,
+  });
 
-  useEffect(() => {
-    const fetchPost = async () => {
-      try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles/${id}`,
-          {
-            cache: "no-store",
-          }
-        );
+  if (isLoading)
+    return (
+      <div className="flex bg-gray-900 justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
+      </div>
+    );
 
-        if (!res.ok) throw new Error("Failed to fetch article");
-
-        const data = await res.json();
-        setPostData(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (id) fetchPost();
-  }, [id]);
-
-  if (loading) return <p className="text-white p-8">Loading...</p>;
-  if (error) return <p className="text-red-400 p-8">Error: {error}</p>;
+  if (error) return <p className="text-red-500">Failed to load Category.</p>;
   if (!postData) return null;
 
   return (
