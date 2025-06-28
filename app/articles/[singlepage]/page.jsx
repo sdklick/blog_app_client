@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FcApproval, FcPrevious } from "react-icons/fc";
 async function getArticle(id) {
-  const res = await fetch(`http://localhost:2000/api/articles/${id}`, {
+  const res = await fetch(`${process.env.API_BASE_URL}/articles/${id}`, {
     cache: "no-store", // ensures fresh data every time (like getServerSideProps)
   });
 
