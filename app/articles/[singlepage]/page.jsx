@@ -2,9 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { FcApproval, FcPrevious } from "react-icons/fc";
 async function getArticle(id) {
-  const res = await fetch(`${process.env.API_BASE_URL}/articles/${id}`, {
-    cache: "no-store", // ensures fresh data every time (like getServerSideProps)
-  });
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles/${id}`,
+    {
+      cache: "no-store", // ensures fresh data every time (like getServerSideProps)
+    }
+  );
 
   if (!res.ok) {
     throw new Error("Failed to fetch article");
