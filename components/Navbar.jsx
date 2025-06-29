@@ -29,11 +29,17 @@ const Navbar = () => {
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-7">
           <NavLink href="/" text="Home" isActive={isActive("/")} />
+           <NavLink
+            href="/aboutus"
+            text="AboutUs"
+            isActive={isActive("/aboutus")}
+          />
           <NavLink
             href="/articles"
             text="Articles"
             isActive={isActive("/articles")}
           />
+           
           <NavLink
             href="/categories"
             text="Categories"
@@ -103,6 +109,12 @@ const Navbar = () => {
           isActive={isActive("/")}
         />
         <MobileNavLink
+          href="/aboutus"
+          text="AboutUs"
+          onClick={() => setIsMobileMenuOpen(false)}
+          isActive={isActive("/aboutus")}
+        />
+        <MobileNavLink
           href="/articles"
           text="Articles"
           onClick={() => setIsMobileMenuOpen(false)}
@@ -121,8 +133,8 @@ const Navbar = () => {
           isActive={isActive("/contact")}
         />
         <MobileNavLink
-          href="/subscribe"
-          text="Subscribe"
+          href="/writeblog"
+          text="Write"
           onClick={() => setIsMobileMenuOpen(false)}
           isButton
         />

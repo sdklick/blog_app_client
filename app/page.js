@@ -203,44 +203,44 @@ const HomePage = () => {
             <NoArticles />
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {firstThreecategories.map((c) => (
-                <Link
-                  key={c.category}
-                  href={`/categories/${c.category}`}
-                  className=" hover:underline transition duration-200"
-                >
-                  <div className="bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out transform hover:-translate-y-1 p-6 group">
-                    {/* Centered Logo */}
-                    <div className="flex justify-center mb-4">
-                      <Image
-                        src={`https://placehold.co/400x200/111827/F3F4F6?text=${c.category}`}
-                        alt="Logo"
-                        width={400}
-                        height={200}
-                      />
-                    </div>
+  {firstThreecategories.map((c) => (
+    <Link
+      key={c.category}
+      href={`/categories/${c.category}`}
+      className="hover:underline transition duration-200"
+    >
+      <div className="bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out transform hover:-translate-y-1 group overflow-hidden">
+        
+        {/* Full-width image */}
+        <div className="relative bg-gray-800 w-full h-40 sm:h-48 overflow-hidden">
+          <Image
+            src={`https://placehold.co/600x300/1f2937/F3F4F6?text=${encodeURIComponent(c.category)}`}
+            alt={`${c.category} image`}
+            fill
+            className="object-cover rounded-t-xl"
+            sizes="(max-width: 768px) 100vw, 33vw"
+          />
+        </div>
 
-                    {/* Title */}
-                    <h3 className="text-2xl font-bold text-[#D4AF37] text-center mb-2 group-hover:text-blue-400 transition-colors duration-200">
-                      {c.category}
-                    </h3>
+        {/* Content */}
+        <div className="p-6">
+          <h3 className="text-2xl font-bold text-[#D4AF37] text-center mb-2 group-hover:text-blue-400 transition-colors duration-200">
+            {c.category}
+          </h3>
 
-                    {/* Bottom Row */}
-                    <div className="mt-6 flex items-center justify-between text-sm">
-                      <div className="flex items-center text-gray-300">
-                        <FcComboChart
-                          size={18}
-                          className="mr-1 text-blue-400"
-                        />
-                        {c.totalPosts} Posts
-                      </div>
-
-                      <FcAdvance size={30} />
-                    </div>
-                  </div>
-                </Link>
-              ))}
+          <div className="mt-6 flex items-center justify-between text-sm">
+            <div className="flex items-center text-gray-300">
+              <FcComboChart size={18} className="mr-1 text-blue-400" />
+              {c.totalPosts} Posts
             </div>
+            <FcAdvance size={30} />
+          </div>
+        </div>
+      </div>
+    </Link>
+  ))}
+</div>
+
           )}
 
           {/* Explore All Categories Button */}
