@@ -17,7 +17,7 @@ const Navbar = () => {
         {/* Logo/Site Title */}
         <Link href="/" className="inline-block">
           <Image
-            src="/logo.png"
+            src="/favicon.png"
             alt="WordNext Logo"
             width={80}
             height={80}
@@ -47,10 +47,10 @@ const Navbar = () => {
           
           {/* Optional: Call to Action Button */}
           <Link
-            href="/subscribe"
+            href="/writeblog"
             className="ml-8 px-5 py-2 bg-white text-indigo-700 rounded-full font-semibold shadow-md hover:bg-gray-100 hover:scale-105 transition-all duration-300"
           >
-            Login
+            Write
           </Link>
         </div>
 

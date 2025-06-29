@@ -6,6 +6,7 @@ import { FcAdvance } from "react-icons/fc";
 import Image from "next/image";
 import { useGetArticlesQuery } from "@/redux/services/articlesApi";
 import { useGetCategoryQuery } from "@/redux/services/categoryApi";
+import NoArticles from "@/components/Noarticle";
 
 const HomePage = () => {
   const {
@@ -31,6 +32,7 @@ const HomePage = () => {
 
   if (isArticlesError || isCategoriesError)
     return <p className="text-red-500">Failed to load articles.</p>;
+
   return (
     <div className="font-inter bg-gray-50">
       {/* Hero Section */}
@@ -101,61 +103,70 @@ const HomePage = () => {
           <h2 className="text-4xl font-extrabold text-white text-center mb-12">
             Latest from the Blog
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {firstThreeArticles.map((article) => (
-              <Link
-                key={article.id}
-                href={`/articles/${article.id}`}
-                className="block"
-              >
-                <div className="bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out transform hover:-translate-y-1 overflow-hidden group">
-                  <div className="w-full h-48 overflow-hidden">
-                    <img
-                      src={article.image}
-                      alt={article.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      onError={(e) => {
-                        e.target.onerror = null;
-                        e.target.src =
-                          "https://placehold.co/400x250/333333/AAAAAA?text=Image+Error";
-                      }}
-                    />
-                  </div>
-                  <div className="p-6">
-                    <span className="text-sm font-semibold text-blue-400 mb-2 block">
-                      {article.category}
-                    </span>
-                    <h3 className="text-xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors duration-200 line-clamp-2">
-                      {article.title}
-                    </h3>
-                    <p className="text-gray-300 text-base mb-4 line-clamp-3">
-                      {article.excerpt}
-                    </p>
-                    <div className="flex items-center justify-between text-sm text-gray-400">
-                      <span className="flex items-center">
-                        <svg
-                          className="w-4 h-4 mr-1 text-gray-400"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
-                            clipRule="evenodd"
-                          ></path>
-                        </svg>
-                        {article.date}
+          {firstThreeArticles.length == 0 ? (
+            <NoArticles />
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {firstThreeArticles.map((article) => (
+                <Link
+                  key={article.id}
+                  href={`/articles/${article.id}`}
+                  className="block"
+                >
+                  <div className="bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out transform hover:-translate-y-1 overflow-hidden group">
+                    <div className="w-full h-48 overflow-hidden">
+                      <img
+                        src={article.image}
+                        alt={article.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src =
+                            "https://placehold.co/400x250/333333/AAAAAA?text=Image+Error";
+                        }}
+                      />
+                    </div>
+                    <div className="p-6">
+                      <span className="text-sm font-semibold text-blue-400 mb-2 block">
+                        {article.category}
                       </span>
-                      <span className="text-blue-400 font-semibold group-hover:underline">
-                        Read More &rarr;
-                      </span>
+                      <h3 className="text-xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors duration-200 line-clamp-2">
+                        {article.title}
+                      </h3>
+                      <p className="text-gray-300 text-base mb-4 line-clamp-3">
+                        {article.excerpt}
+                      </p>
+                      <div className="flex items-center justify-between text-sm text-gray-400">
+                        <span className="flex items-center">
+                          <svg
+                            className="w-4 h-4 mr-1 text-gray-400"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                              clipRule="evenodd"
+                            ></path>
+                          </svg>
+                          {new Date(article.date).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
+                          
+                        </span>
+                        <span className="text-blue-400 font-semibold group-hover:underline">
+                          Read More &rarr;
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </Link>
-            ))}
-          </div>
+                </Link>
+              ))}
+            </div>
+          )}
 
           <div className="text-center mt-12">
             <Link
@@ -188,39 +199,49 @@ const HomePage = () => {
           <h2 className="text-4xl font-extrabold text-white text-center mb-12">
             Browse By Category
           </h2>
+          {firstThreecategories.length == 0 ? (
+            <NoArticles />
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {firstThreecategories.map((c) => (
+                <Link
+                  key={c.category}
+                  href={`/categories/${c.category}`}
+                  className=" hover:underline transition duration-200"
+                >
+                  <div className="bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out transform hover:-translate-y-1 p-6 group">
+                    {/* Centered Logo */}
+                    <div className="flex justify-center mb-4">
+                      <Image
+                        src={`https://placehold.co/400x200/111827/F3F4F6?text=${c.category}`}
+                        alt="Logo"
+                        width={400}
+                        height={200}
+                      />
+                    </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {firstThreecategories.map((c) => (
-              <div
-                key={c.category}
-                className="bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out transform hover:-translate-y-1 p-6 group"
-              >
-                {/* Centered Logo */}
-                <div className="flex justify-center mb-4">
-                  <Image src={`https://placehold.co/400x200/111827/F3F4F6?text=${c.category}`} alt="Logo" width={400} height={200} />
-                </div>
+                    {/* Title */}
+                    <h3 className="text-2xl font-bold text-[#D4AF37] text-center mb-2 group-hover:text-blue-400 transition-colors duration-200">
+                      {c.category}
+                    </h3>
 
-                {/* Title */}
-                <h3 className="text-2xl font-bold text-[#D4AF37] text-center mb-2 group-hover:text-blue-400 transition-colors duration-200">
-                  {c.category}
-                </h3>
+                    {/* Bottom Row */}
+                    <div className="mt-6 flex items-center justify-between text-sm">
+                      <div className="flex items-center text-gray-300">
+                        <FcComboChart
+                          size={18}
+                          className="mr-1 text-blue-400"
+                        />
+                        {c.totalPosts} Posts
+                      </div>
 
-                {/* Bottom Row */}
-                <div className="mt-6 flex items-center justify-between text-sm">
-                  <div className="flex items-center text-gray-300">
-                    <FcComboChart size={18} className="mr-1 text-blue-400" />
-                    {c.totalPosts} Posts
+                      <FcAdvance size={30} />
+                    </div>
                   </div>
-                  <Link
-                    href={`/categories/${c.category}`}
-                    className=" hover:underline transition duration-200"
-                  >
-                    <FcAdvance size={30} />
-                  </Link>
-                </div>
-              </div>
-            ))}
-          </div>
+                </Link>
+              ))}
+            </div>
+          )}
 
           {/* Explore All Categories Button */}
           <div className="text-center mt-12">

@@ -23,7 +23,7 @@ const CategoryPage = () => {
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {allCategory?.map((cdata, id) => (
-            <Link key={id} href={`/categories/${cdata.id}`} className="block">
+            <Link key={cdata.category} href={`/categories/${cdata.category}`} className="block">
               <div className="bg-gray-900 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out transform hover:-translate-y-1 overflow-hidden group relative">
                 {/* Category Icon & Background */}
                 <div className="p-8 flex items-center justify-center bg-gradient-to-br from-gray-800 to-gray-900">
