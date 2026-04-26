@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useGetCategoryByNameQuery } from "@/redux/services/categorytypeApi";
 import { FiClock, FiArrowRight, FiArrowLeft } from "react-icons/fi";
@@ -72,14 +73,12 @@ const Categorytype = (props) => {
             >
               <div className="h-full flex flex-col bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-3xl overflow-hidden hover:bg-slate-800/80 hover:border-sky-500/30 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(14,165,233,0.05)]">
                 <div className="relative w-full h-56 overflow-hidden bg-slate-800">
-                  <img
+                  <Image
                     src={articletype.image}
                     alt={articletype.title}
-                    className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-out bg-slate-800"
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = "https://placehold.co/400x250/1e293b/94a3b8?text=Image+Unavailable";
-                    }}
+                    fill
+                    className="object-cover transform group-hover:scale-110 transition-transform duration-700 ease-out"
+                    sizes="(max-width: 768px) 100vw, 33vw"
                   />
                   <div className="absolute top-4 left-4 bg-slate-900/80 backdrop-blur-md text-xs font-semibold px-3 py-1.5 rounded-full text-sky-300 border border-sky-500/20 capitalize">
                     {decodeURIComponent(category)}
